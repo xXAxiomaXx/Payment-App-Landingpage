@@ -1,0 +1,12 @@
+.banner{
+    background-image: url(../../Images/Design\ sem\ nome.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 75%;
+}
+
+@media (min-width: 1024px) {
+    .banner{
+        background-size: 130%;
+    }
+}
