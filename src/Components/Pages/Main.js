@@ -1,4 +1,5 @@
 import React from "react";
+import $ from "jquery";
 import Logo from "../../Images/ukalaa escrita.png";
 import Foto from "../../Images/Design_sem_nome-removebg-preview.png";
 import Money from "../../Images/money_icon.40e903c.svg";
@@ -13,20 +14,31 @@ import { useNavigate } from "react-router-dom";
 
 const Main = () => {
   const navigate = useNavigate();
+  const loginStatus = document.getElementById("loginStatus").value;
 
   const handleLogin = () => {
-    navigate("/login");
+    navigate("/account/login", { replace: true });
   };
   const handleReg = () => {
-    navigate("/register");
+    navigate("/account/create", { replace: true });
   };
 
-  var scrollTop = function() {
+  var scrollTop = function () {
     window.scrollTo({
-      top:0,
-      behavior:"smooth",
+      top: 0,
+      behavior: "smooth",
     });
-};
+  };
+
+  $(document).ready(function () {
+    if (loginStatus === "true") {
+      $("#log").hide();
+      $("#access").show();
+    } else {
+      $("#log").show();
+      $("#access").hide();
+    }
+  });
 
   const [showButton, setShowButton] = React.useState(false);
 
@@ -49,7 +61,13 @@ const Main = () => {
       <div clasName="main bg p-10 h-fit-nfitral-100 overflow-x-hidden">
         <nav className="flex  items-center justify-between pt-5 bg-white">
           <img src={Logo} className="w-20 pb-5 ml-5 sm:ml-10 sm:w-40" />
-          <div className="mr-5 sm:mr-10">
+          <button
+            id="access"
+            className="bg-[#f56e2c] px-5 py-2 mb-5 mr-5 sm:mr-10 border-none rounded-full text-sm sm:text-lg text-white font-semibold"
+          >
+            Acessar conta
+          </button>
+          <div id="log" className="mr-5 sm:mr-10">
             <button
               onClick={handleReg}
               className="bg-[#f56e2c] px-5 py-2 mb-5 border-none rounded-full text-sm sm:text-lg text-white font-semibold"
@@ -65,11 +83,12 @@ const Main = () => {
           </div>
         </nav>
         {showButton && (
-        <button 
-        onClick={scrollTop}
-        className="bg-white px-5 py-1 mb-5 border-none rounded-full text-lg text-[#f56e2c] font-semibold right-4 bottom-4 fixed z-50 align-middle">
-          <i class="bx bx-chevron-up align-middle text-xl"></i>Voltar ao topo
-        </button>
+          <button
+            onClick={scrollTop}
+            className="bg-white px-5 py-1 mb-5 border-none rounded-full text-lg text-[#f56e2c] font-semibold right-4 bottom-4 fixed z-50 align-middle"
+          >
+            <i class="bx bx-chevron-up align-middle text-xl"></i>Voltar ao topo
+          </button>
         )}
         <section className="h-screen flex justify-center lg:justify-around lg:pb-40 lg:pt-10 bg-[#5e2cf5]">
           <img src={Foto} className="h-fit hidden lg:block" />
@@ -120,7 +139,7 @@ const Main = () => {
       </section>
       <section className="bg-neutral-100 flex flex-wrap justify-center gap-14 pb-10">
         <div className="bg-white flex flex-col 2xl:flex-row justify-center lg:justify-between self-center w-11/12 lg:w-4/12 p-10 rounded-3xl h-fit shadow-lg">
-          <img src={Money} className="w-10/12 self-center lg:w-auto"/>
+          <img src={Money} className="w-10/12 self-center lg:w-auto" />
           <div className="flex flex-col self-center">
             <h3 className="font-bold lg:text-2xl text-center w-80 mb-5">
               Flexibilidade para você e seus clientes
@@ -133,7 +152,7 @@ const Main = () => {
           </div>
         </div>
         <div className="bg-white flex flex-col 2xl:flex-row justify-center lg:justify-between self-center w-11/12 lg:w-4/12 p-10 rounded-3xl h-fit shadow-lg">
-          <img src={Lock} className="w-10/12 self-center lg:w-auto"/>
+          <img src={Lock} className="w-10/12 self-center lg:w-auto" />
           <div className="flex flex-col self-center">
             <h3 className="font-bold text-2xl text-center w-80 mb-5">
               Retentativa Inteligente
@@ -147,7 +166,7 @@ const Main = () => {
           </div>
         </div>
         <div className="bg-white flex flex-col 2xl:flex-row justify-center lg:justify-between self-center w-11/12 lg:w-4/12 p-10 rounded-3xl h-fit shadow-lg">
-          <img src={Shield} className="w-10/12 self-center lg:w-auto"/>
+          <img src={Shield} className="w-10/12 self-center lg:w-auto" />
           <div className="flex flex-col self-center">
             <h3 className="font-bold text-2xl text-center w-80 mb-5">
               Segurança e Alta disponibilidade
@@ -161,7 +180,7 @@ const Main = () => {
           </div>
         </div>
         <div className="bg-white flex flex-col 2xl:flex-row justify-center lg:justify-between self-center w-11/12 lg:w-4/12 p-10 pb-10 rounded-3xl h-fit shadow-lg">
-          <img src={Crypt} className="w-10/12 self-center lg:w-auto"/>
+          <img src={Crypt} className="w-10/12 self-center lg:w-auto" />
           <div className="flex flex-col self-center">
             <h3 className="font-bold text-2xl text-center w-80 mb-5">
               Tokenização
@@ -175,7 +194,10 @@ const Main = () => {
         </div>
       </section>
       <section className="bg-neutral-50 flex flex-col lg:flex-row justify-around py-44">
-        <img src={Sales} className="flex self-center mb-10 lg:mb-0 lg:ml-10 w-10/12 lg:w-5/12" />
+        <img
+          src={Sales}
+          className="flex self-center mb-10 lg:mb-0 lg:ml-10 w-10/12 lg:w-5/12"
+        />
         <div className="w-10/12 lg:w-6/12 self-center">
           <h1 className="font-semibold text-3xl lg:text-5xl lg:w-10/12 leading-tight mb-10">
             Recuperação de vendas com IA
@@ -193,7 +215,10 @@ const Main = () => {
       </section>
       <section className="bg-white p-10 flex justify-center">
         <div className="bg-[#5e2cf5] text-white flex flex-col lg:flex-row lg:w-10/12 rounded-3xl px-20 py-28">
-          <img src={Cellphone} className="lg:mr-10 mb-10 lg:mb-0 self-center w-10/12 lg:w-5/12" />
+          <img
+            src={Cellphone}
+            className="lg:mr-10 mb-10 lg:mb-0 self-center w-10/12 lg:w-5/12"
+          />
           <div className="flex flex-col justify-around text-center">
             <h1 className="font-bold text-5xl w-11/12 mb-10">
               Link de pagamento Customizável

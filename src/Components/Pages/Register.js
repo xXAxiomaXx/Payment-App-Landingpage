@@ -1,4 +1,5 @@
 import React from "react";
+import $ from "jquery";
 import Logo from "../../Images/ukalaa escrita.png";
 import { useNavigate } from "react-router-dom";
 
@@ -6,19 +7,84 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate("/login");
+    navigate("/account/login",{ replace: true });
   };
 
   const handlehome = () => {
-    navigate("/");
+    navigate("/",{ replace: true });
+  };
+
+  const baseURL = document.getElementById("baseURL").value;
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const email = event.target.elements.email.value;
+    const password = event.target.elements.password.value;
+    const name = event.target.elements.name.value;
+    const document = event.target.elements.document.value;
+    const birth = event.target.elements.birth.value;
+    const cellphone = event.target.elements.cellphone.value;
+    const password2 = event.target.elements.password2.value;
+
+    $.ajax({
+      url: baseURL + "/account/create",
+      method: "POST",
+      dataType: "json",
+      data:{
+        "email":email,
+        "password":password,
+        "password2":password2,
+        "name":name,
+        "document":document,
+        "birth":birth,
+        "cellphone":cellphone,
+      },
+      success: function (response) {
+        console.log(response);
+        //redirect
+        if (response.redirect) {
+          window.location.href = response.redirect;
+        }
+        //reaload
+        if (response.reload) {
+          window.location.reload();
+        }
+        //message
+        if (response.message) {
+          if (response.message.text) {
+            alert(response.message.text);
+          }
+        }
+      },
+      error: function (error) {
+        console.log("Error:", error);
+      },
+    });
+
+    // console.log("Email:", email);
+    // console.log("Senha:", password);
+    // console.log("Nome:", name);
+    // console.log("CPF:", cpf);
+    // console.log("Nascimento:", birth);
+    // console.log("Telefone:", phone);
   };
 
   return (
     <div className="bg-neutral-50 flex justify-center py-10 items-center h-fit">
+      <a
+        className="absolute z-50 right-6 top-4 cursor-pointer"
+        onClick={handlehome}
+      >
+        <i className="bx bx-x text-5xl"></i>
+      </a>
       <div className="bg-white w-fit py-3 px-10 flex flex-col items-center rounded-xl shadow-xl content-center">
-        <img src={Logo} onClick={handlehome} className="w-40 pb-5 cursor-pointer" />
+        <img
+          src={Logo}
+          className="w-40 pb-5 cursor-pointer"
+        />
         <h3 className="font-medium text-2xl">Crie sua conta</h3>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mt-5 w-full">
             <div className="sm:col-span-3">
               <label
@@ -45,16 +111,15 @@ const Register = () => {
                 htmlFor="CPF"
                 className="block text-normal text-start font-semibold leading-6 text-gray-900"
               >
-                CPF
+                CPF ou CNPJ
               </label>
               <div className="mt-2">
                 <input
                   type="tel"
                   maxLength={11}
-                  name="CPF"
-                  id="CPF"
+                  name="document"
+                  id="document"
                   placeholder="123.456.789-10"
-                  pattern="[0-9]3.[0-9]3.[0-9]3-[0-9]2"
                   className="w-full rounded-md mb-4 border-0 py-1 text-lg font-normal text-gray-900 text-start pl-2 pr-40 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-200"
                 />
               </div>
@@ -107,12 +172,11 @@ const Register = () => {
             </label>
             <div className="mt-2">
               <input
-                id="phone"
-                name="phone"
+                id="cellphone"
+                name="cellphone"
                 type="tel"
                 autoComplete="tel"
                 placeholder="(00) 00000-0000"
-                pattern="([0-9]2)[0-9]5-[0-9]4"
                 className="w-full rounded-md mb-4 border-0 py-1 text-lg font-normal text-gray-900 text-start pl-2 pr-40 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-200"
               />
             </div>
@@ -144,8 +208,8 @@ const Register = () => {
             </label>
             <div className="mt-2">
               <input
-                id="password"
-                name="password"
+                id="password2"
+                name="password2"
                 type="password"
                 autoComplete="password"
                 placeholder="Digite sua senha"
@@ -153,11 +217,16 @@ const Register = () => {
               />
             </div>
           </div>
+          <button className="bg-[#5e2cf5] px-20 sm:px-28 py-2 mb-5 border-none rounded-lg text-lg text-white font-semibold">
+            Criar conta
+          </button>
         </form>
-        <button className="bg-[#5e2cf5] px-20 sm:px-28 py-2 mb-5 border-none rounded-lg text-lg text-white font-semibold">
-          Criar conta
-        </button>
-        <button onClick={handleLogin} className="bg-white px-16 sm:px-24 py-2 mb-5 border-2 border-[#5e2cf5] rounded-lg text-lg text-[#5e2cf5] font-semibold">
+
+        <button
+          type="submit"
+          onClick={handleLogin}
+          className="bg-white px-16 sm:px-24 py-2 mb-5 border-2 border-[#5e2cf5] rounded-lg text-lg text-[#5e2cf5] font-semibold"
+        >
           Já tenho conta
         </button>
       </div>
